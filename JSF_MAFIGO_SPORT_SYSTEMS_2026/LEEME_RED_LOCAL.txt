@@ -1,0 +1,10 @@
+JSF & MAFIGO SPORT SYSTEMS — RED LOCAL
+
+1. Conecta la laptop y los celulares/tablets al mismo Wi-Fi.
+2. Ejecuta servidor_local_windows.bat.
+3. En la laptop abre CMD y escribe: ipconfig
+4. Busca la Dirección IPv4, por ejemplo 192.168.1.100.
+5. En el celular abre: http://192.168.1.100:8080
+6. Si Windows pregunta por el firewall, permite Python en redes privadas.
+
+IMPORTANTE: esta versión todavía usa almacenamiento local del navegador. Para varios jueces capturando y compartiendo resultados simultáneamente se debe activar el servidor central de datos de la siguiente fase.

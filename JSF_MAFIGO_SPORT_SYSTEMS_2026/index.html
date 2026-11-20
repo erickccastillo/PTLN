@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1220">
+<title>JSF & MAFIGO SPORT SYSTEMS</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#eef4ff;font-family:Arial,sans-serif}
+main{max-width:1100px;margin:auto;padding:18px}.page{display:none}.page.show{display:block}
+.box{background:#121c2e;border:1px solid #33445f;border-radius:20px;padding:22px;margin-bottom:16px}
+h1{font-size:32px;margin:0 0 8px}h2{margin-top:0}p{color:#b9c6d9}
+button,input,select{font:inherit}button{padding:13px 15px;margin:5px 0;border:0;border-radius:11px;background:#fff;color:#0b1220;font-weight:bold;cursor:pointer}
+.secondary{background:#26364f;color:#fff}.danger{background:#7f1d1d;color:#fff}.ok{background:#14532d;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.module{background:#19263a;color:#fff}.form{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+label{display:block;font-size:13px;color:#b9c6d9}input,select{width:100%;padding:11px;border-radius:9px;border:1px solid #465a78;background:#0d1728;color:#fff;margin-top:5px}
+.full{grid-column:1/-1}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.card{background:#0d1728;border:1px solid #33445f;border-radius:14px;padding:15px}.num{font-size:28px;font-weight:bold}
+table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:9px;border-bottom:1px solid #33445f;text-align:left;font-size:13px}th{color:#b9c6d9}
+.badge{display:inline-block;padding:4px 8px;border-radius:99px;background:#26364f;margin:2px;font-size:12px}.notice{padding:12px;border-left:4px solid #7da2d6;background:#0d1728;border-radius:8px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{width:auto}.small{font-size:12px;color:#8fa1ba}
+@media(max-width:750px){.menu,.cards,.form{grid-template-columns:1fr 1fr}.full{grid-column:1/-1}}
+@media(max-width:520px){.menu,.cards,.form,.grid{grid-template-columns:1fr}h1{font-size:27px}}
+
+.watermark{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;pointer-events:none;z-index:0;transform:rotate(-25deg);font-size:70px;font-weight:900;letter-spacing:7px;line-height:.9;color:rgba(255,255,255,.025)}
+.watermark span{display:block;font-size:28px;letter-spacing:10px;margin-top:8px}
+.brandbar{position:relative;z-index:3;max-width:1100px;margin:auto;padding:10px 18px;display:flex;justify-content:space-between;gap:12px;align-items:center;color:#dbe7f7;font-size:13px;border-bottom:1px solid #33445f}
+.brandbar b{font-size:16px;color:#fff}
+.page,.box,button,input,select,table{position:relative;z-index:1}
+
+:root{--navy:#07152d;--navy2:#0c2347;--blue:#168cff;--gold:#f3c64f;--text:#f4f8ff;--muted:#a9b9cf}
+body{background:radial-gradient(circle at 50% -10%,#153d72 0,#07152d 42%,#050c18 100%);min-height:100vh}
+.brandbar{background:rgba(5,13,28,.82);backdrop-filter:blur(10px);border-bottom:1px solid rgba(243,198,79,.28);box-shadow:0 8px 30px rgba(0,0,0,.22)}
+.brandbar b{letter-spacing:.5px;color:#fff}.brandbar b::first-letter{color:var(--gold)}
+.box{background:linear-gradient(145deg,rgba(17,34,62,.96),rgba(7,18,35,.96));border:1px solid rgba(78,133,205,.28);box-shadow:0 18px 45px rgba(0,0,0,.24)}
+h1{letter-spacing:-.5px}.hero{overflow:hidden;position:relative;background:linear-gradient(120deg,#07162d 10%,#0c2b55 55%,#08172e 100%)}
+.hero:after{content:"";position:absolute;width:340px;height:340px;border-radius:50%;right:-140px;top:-150px;background:rgba(243,198,79,.12);filter:blur(3px)}
+.hero-brand{display:flex;gap:22px;align-items:center;position:relative;z-index:2}.hero-brand img{width:190px;height:92px;object-fit:cover;border-radius:16px;border:1px solid rgba(243,198,79,.5);box-shadow:0 0 35px rgba(22,140,255,.22)}
+.eyebrow{font-size:11px;letter-spacing:3px;color:var(--gold);font-weight:800}.hero-brand h1{font-size:38px;margin:5px 0}.hero-brand p{margin:0;color:#d7e4f6;letter-spacing:2px}
+button{background:linear-gradient(135deg,#fff,#dcecff);box-shadow:0 7px 18px rgba(0,0,0,.16)}button:hover{transform:translateY(-1px)}.module{background:linear-gradient(145deg,#18345d,#102541);border:1px solid rgba(65,151,255,.22)}
+.card{background:linear-gradient(145deg,#102541,#0a1729);border-color:rgba(78,133,205,.25)}.num{color:#fff}.sportchips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.sportchips span{padding:8px 11px;border-radius:999px;background:rgba(22,140,255,.11);border:1px solid rgba(22,140,255,.25);font-size:12px;color:#dceaff}.footer{max-width:1100px;margin:30px auto 0;padding:18px;color:#7085a2;text-align:center;font-size:11px;letter-spacing:1px;position:relative;z-index:1}
+@media(max-width:650px){.hero-brand{align-items:flex-start}.hero-brand img{width:120px;height:68px}.hero-brand h1{font-size:25px}.hero-brand p{font-size:11px}.eyebrow{font-size:8px;letter-spacing:1.5px}}
+</style>
+<link rel="manifest" href="manifest.webmanifest"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><link rel="icon" href="icon.svg"></head>
+<body>
+<div class="watermark">JSF & MAFIGO<br><span>SPORT SYSTEMS</span></div>
+<header class="brandbar"><b>⚡ JSF & MAFIGO SPORT SYSTEMS</b><span>Tecnología para la gestión deportiva · <strong id="serverStatus">Modo local</strong></span></header>
+<main>
+
+<section id="redlocal" class="page"><div class="box"><h1>📡 Red local del evento</h1>
+<div class="notice"><b>Modo campo:</b> conecta laptop y celulares de jueces al mismo Wi‑Fi. La captura puede continuar aunque Internet se interrumpa.</div>
+<div class="cards">
+<div class="card"><div class="small">Servidor</div><div class="num">1</div>💻 Laptop</div>
+<div class="card"><div class="small">Jueces</div><div class="num">4–6</div>📱 Celulares</div>
+<div class="card"><div class="small">Internet</div><div class="num">Opc.</div>4G/5G</div>
+<div class="card"><div class="small">Respaldo</div><div class="num">JSON</div>💾 Local</div>
+</div>
+<div class="notice">Router Wi‑Fi → Laptop principal → JSF & MAFIGO SPORT SYSTEMS → jueces → resultados.</div>
+<div class="form"><div><label>IP de la laptop<input id="ipLan" placeholder="192.168.1.100"></label></div><div><label>Puerto<input id="puertoLan" value="8080"></label></div></div>
+<button onclick="mostrarDireccion()">Mostrar dirección</button><div id="direccionLan"></div>
+<button class="secondary" onclick="abrir('organizador')">← Regresar</button></div></section>
+<section id="inicio" class="page show"><div class="hero box">
+<div class="hero-brand"><img src="logo.png" alt="JSF & MAFIGO SPORT SYSTEMS"><div><span class="eyebrow">TECNOLOGÍA PARA LA GESTIÓN DEPORTIVA</span><h1>JSF & MAFIGO SPORT SYSTEMS</h1><p>Organiza · Gestiona · Controla · Desarrolla · Conecta</p></div></div><p><b>PENTATLÓN MODERNO</b> · Sistema de gestión de competencias</p><p>Plataforma profesional para organizar, gestionar y controlar competencias deportivas</p>
+<div class="grid"><button onclick="abrir('organizador')">🔐 ORGANIZADOR</button><button class="secondary" onclick="abrir('publico')">🌎 PÚBLICO</button></div>
+</div><div class="box"><div class="notice"><b>VERSIÓN BASE · 2026:</b> 13 categorías, Femenil/Masculino, expedientes, inscripciones, resultados, aprobación, publicación, podios, respaldo y control operativo. Reglamento de referencia: UIPM Competition Rules and Equipment Regulations, versión publicada el 06.02.2026.</div></div></section>
+
+<section id="organizador" class="page"><div class="box">
+<h1>Panel Principal</h1><p>Control integral de atletas, entrenadores, eventos y competencias.</p><div class="sportchips"><span>🏆 Competencias</span><span>👥 Atletas</span><span>📅 Eventos</span><span>📊 Resultados</span></div>
+<div class="cards" id="resumen"></div>
+<div class="menu">
+<button class="module" onclick="abrir('eventos')">🏟️ Eventos</button><button class="module" onclick="abrir('atletas')">👤 Atletas</button>
+<button class="module" onclick="abrir('clubes')">🏢 Clubes</button><button class="module" onclick="abrir('inscripciones')">📋 Inscripciones</button>
+<button class="module" onclick="abrir('natacion')">🏊 Natación</button><button class="module" onclick="abrir('esgrima')">🤺 Esgrima</button>
+<button class="module" onclick="abrir('obstaculos')">🏃 Obstáculos</button><button class="module" onclick="abrir('laser')">🏃‍♂️🔫 Laser Run</button>
+<button class="module" onclick="abrir('resultados')">📊 Resultados</button><button class="module" onclick="abrir('podios')">🏅 Podios</button>
+<button class="module" onclick="abrir('gafetes')">🎫 Gafetes</button><button class="module" onclick="abrir('reportes')">📄 Reportes</button>
+<button class="module" onclick="abrir('categorias')">🧩 Categorías y pruebas</button><button class="module" onclick="abrir('simulacion')">🧪 Simulación nacional</button><button class="module" onclick="abrir('control')">🛡️ Control del evento</button>
+</div><button class="secondary" onclick="abrir('inicio')">← Salir</button>
+</div></section>
+
+<section id="publico" class="page"><div class="box"><h1>Portal Público</h1>
+<p>Consulta pública del evento.</p><button onclick="abrir('resultados')">📊 Resultados</button><button onclick="abrir('podios')">🏅 Podios</button>
+<button class="secondary" onclick="abrir('inicio')">← Inicio</button></div></section>
+
+<section id="eventos" class="page"><div class="box"><h1>🏟️ Eventos</h1>
+<div class="form">
+<div><label>Nombre del evento<input id="evNombre" placeholder="Campeonato Nacional 2026"></label></div>
+<div><label>Fecha<input id="evFecha" type="date"></label></div>
+<div><label>Sede<input id="evSede" placeholder="Unidad deportiva"></label></div>
+<div><label>Ciudad<input id="evCiudad" placeholder="Guadalajara, Jalisco"></label></div>
+<div><label>Reglamento aplicado<select id="evReg"><option>UIPM 2026</option></select></label></div>
+<div><label>Formato<select id="evFormato"><option>Individual</option><option>Individual + Relevos</option><option>Relevos</option></select></label></div>
+</div><div class="actions"><button onclick="guardarEvento()">Guardar evento</button><button class="secondary" onclick="abrir('categorias')">Configurar categorías</button><button class="secondary" onclick="abrir('organizador')">← Regresar</button></div>
+<div id="eventoGuardado"></div></div></section>
+
+<section id="categorias" class="page"><div class="box"><h1>🧩 Categorías y pruebas</h1>
+<p>Las 13 categorías están disponibles. El perfil de pruebas se muestra automáticamente para la configuración inicial.</p>
+<div id="listaCategorias"></div><button class="secondary" onclick="abrir('organizador')">← Regresar</button></div></section>
+
+<section id="atletas" class="page"><div class="box"><h1>👤 Atletas</h1>
+<div class="form"><div><label>Nombre completo<input id="aNombre"></label></div><div><label>Año de nacimiento<input id="aAnio" type="number" min="1900" max="2026"></label></div>
+<div><label>Rama<select id="aRama"><option>Femenil</option><option>Masculino</option></select></label></div><div><label>Club<input id="aClub"></label></div></div>
+<div class="actions"><button onclick="guardarAtleta()">Registrar atleta</button><button class="secondary" onclick="abrir('organizador')">← Regresar</button></div>
+<div id="atletaResultado"></div><table><thead><tr><th>Atleta</th><th>Año</th><th>Rama</th><th>Categoría</th><th>Club</th></tr></thead><tbody id="tablaAtletas"></tbody></table>
+</div></section>
+
+<section id="clubes" class="page"><div class="box"><h1>🏢 Clubes / Delegaciones</h1>
+<div class="form"><div><label>Nombre del club<input id="cNombre"></label></div><div><label>Estado/Delegación<input id="cEstado"></label></div></div>
+<button onclick="guardarClub()">Registrar club</button><button class="secondary" onclick="abrir('organizador')">← Regresar</button>
+<table><thead><tr><th>Club</th><th>Estado/Delegación</th></tr></thead><tbody id="tablaClubes"></tbody></table></div></section>
+
+<section id="inscripciones" class="page"><div class="box"><h1>📋 Inscripciones</h1>
+<p>Selecciona atletas para el evento y verifica categoría, rama y pruebas.</p>
+<div class="actions"><button onclick="inscribirTodos()">Inscribir todos</button><button class="secondary" onclick="abrir('organizador')">← Regresar</button></div>
+<table><thead><tr><th>Inscrito</th><th>Atleta</th><th>Club</th><th>Rama</th><th>Categoría</th><th>Pruebas</th></tr></thead><tbody id="tablaIns"></tbody></table>
+</div></section>
+
+<section id="resultados" class="page"><div class="box"><h1>📊 Resultados</h1>
+<div class="notice">Flujo de control: <b>Provisional → Aprobado → Publicado</b>. Se capturan puntos por prueba sin imponer una fórmula no validada para el reglamento específico del evento.</div>
+<div class="form">
+<div><label>Atleta<select id="rAtleta"></select></label></div>
+<div><label>Prueba<select id="rPrueba"><option>Esgrima</option><option>Obstáculos</option><option>Natación</option><option>Laser Run</option></select></label></div>
+<div><label>Puntos<input id="rPuntos" type="number" min="0"></label></div>
+<div><label>Tiempo / marca<input id="rMarca" placeholder="00:00.00"></label></div>
+<div class="full"><label>Incidencia / observación<input id="rObs"></label></div>
+</div>
+<div class="actions"><button onclick="guardarResultado()">Guardar resultado</button><button class="secondary" onclick="aprobarResultados()">Aprobar provisionales</button><button class="secondary" onclick="publicarResultados()">Publicar aprobados</button></div>
+<table><thead><tr><th>Atleta</th><th>Categoría</th><th>Prueba</th><th>Puntos</th><th>Marca</th><th>Estado</th></tr></thead><tbody id="tablaResultados"></tbody></table>
+<button class="secondary" onclick="abrir('organizador')">← Regresar</button></div></section>
+
+<section id="podios" class="page"><div class="box"><h1>🏅 Podios</h1>
+<p>Clasificación acumulada por categoría y rama usando resultados aprobados/publicados.</p>
+<div id="podiosContenido"></div><button class="secondary" onclick="abrir('organizador')">← Regresar</button></div></section>
+
+<section id="simulacion" class="page"><div class="box"><h1>🧪 Simulación de campeonato nacional</h1>
+<p>Genera datos ficticios para probar el flujo completo.</p>
+<div class="notice"><b>Prueba segura:</b> los atletas y resultados son ficticios.</div>
+<div class="actions">
+<button onclick="crearSimulacion()">Crear 30 atletas ficticios</button>
+<button class="secondary" onclick="generarResultadosDemo()">Generar resultados</button>
+<button class="secondary" onclick="aprobarResultados()">Aprobar provisionales</button>
+<button class="secondary" onclick="publicarResultados()">Publicar aprobados</button>
+</div>
+<div id="simResumen"></div><div class="box"><h3>Orden de salida</h3><div id="listaSalida"></div></div>
+<div class="box"><h3>Casos especiales</h3><div id="casosDemo"></div></div>
+<button class="secondary" onclick="abrir('organizador')">← Regresar</button>
+</div></section>
+
+<section id="control" class="page"><div class="box"><h1>🛡️ Control del evento</h1>
+<div class="notice"><b>Estado del evento:</b> <span id="estadoEvento">Preparación</span></div>
+<div class="cards" id="controlCards"></div>
+<h3>Checklist operativo</h3><div id="checklist"></div>
+<div class="actions">
+<button onclick="backupDatos()">💾 Descargar respaldo JSON</button>
+<button class="secondary" onclick="limpiarDemo()">Limpiar datos de simulación</button>
+</div>
+<p class="small">Los resultados oficiales deben ser revisados y aprobados por la autoridad técnica del evento antes de publicarse.</p>
+<button class="secondary" onclick="abrir('organizador')">← Regresar</button>
+</div></section>
+<section id="modulo" class="page"><div class="box"><h1 id="titulo"></h1><p id="descripcion"></p><div id="contenidoModulo"></div>
+<button class="secondary" onclick="abrir('organizador')">← Regresar al Organizador</button></div></section>
+
+<footer class="footer">JSF & MAFIGO SPORT SYSTEMS · Tecnología para la gestión deportiva · Módulo Pentatlón Moderno</footer>
+<script>
+const KEY='jsf_mafigo_sport_v1';
+const SERVER_MODE=(location.protocol==='http:' && location.port==='8080') || new URLSearchParams(location.search).get('server')==='1';
+let currentPage='organizador'; let syncBusy=false;
+// Migración automática desde JSF & MAFIGO SPORT SYSTEMS
+if(!localStorage.getItem(KEY) && localStorage.getItem('pentasport_v5')) localStorage.setItem(KEY, localStorage.getItem('pentasport_v5'));
+const cats=[
+['U9','8 y menores'],['U11','9–10'],['U13','11–12'],['U15','13–14'],['U17','15–16'],['U19','17–18'],['Juniors','19–21'],['Seniors','22+'],
+['Masters 30+','30–39'],['Masters 40+','40–49'],['Masters 50+','50–59'],['Masters 60+','60–69'],['Masters 70+','70+']
+];
+function datos(){return JSON.parse(localStorage.getItem(KEY)||'{"eventos":[],"atletas":[],"clubes":[],"inscripciones":[],"resultados":[]}')}
+function setServerStatus(t,ok=true){const e=document.getElementById('serverStatus');if(e){e.textContent=t;e.style.color=ok?'#7ee2a8':'#ffcf70';}}
+function save(d){
+ localStorage.setItem(KEY,JSON.stringify(d));
+ if(SERVER_MODE){
+  syncBusy=true;
+  fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)})
+   .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);setServerStatus('Servidor central conectado');})
+   .catch(()=>setServerStatus('Servidor central sin respuesta',false))
+   .finally(()=>{syncBusy=false;});
+ }
+}
+function categoria(anio,evanio){
+ const edad=evanio-anio;
+ if(edad<=8)return'U9'; if(edad<=10)return'U11'; if(edad<=12)return'U13'; if(edad<=14)return'U15'; if(edad<=16)return'U17'; if(edad<=18)return'U19'; if(edad<=21)return'Juniors'; if(edad<=29)return'Seniors'; if(edad<=39)return'Masters 30+'; if(edad<=49)return'Masters 40+'; if(edad<=59)return'Masters 50+'; if(edad<=69)return'Masters 60+'; return'Masters 70+';
+}
+function pruebas(cat){
+ if(['U9','U11','U13'].includes(cat))return'Natación + Laser Run (base obligatoria; otras pruebas configurables)';
+ if(cat==='U15')return'Obstáculos + Natación + Laser Run';
+ return'Esgrima + Obstáculos + Natación + Laser Run';
+}
+function abrir(id){
+ currentPage=id;
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('show'));
+ const el=document.getElementById(id);
+ if(el){el.classList.add('show');render(id)}else{
+  document.getElementById('titulo').textContent=info[id]?.[0]||id;
+  document.getElementById('descripcion').textContent=info[id]?.[1]||'Módulo preparado para captura y control.';
+  document.getElementById('contenidoModulo').innerHTML=info[id]?.[2]||'<div class="notice">Este módulo queda preparado como siguiente fase de captura oficial.</div>';
+  document.getElementById('modulo').classList.add('show');
+ }
+ scrollTo(0,0);
+}
+const info={
+natacion:['🏊 Natación','Control de resultados de natación.','<div class="notice">Captura prevista: tiempo, posición, puntos, incidencias y estado (OK/DNS/DNF). No se bloquea una fórmula de puntuación hasta verificar el reglamento específico del evento.</div>'],
+esgrima:['🤺 Esgrima','Control de combates.','<div class="notice">Captura prevista: asaltos, victorias, derrotas, puntos y estado técnico. La parametrización final del scoring debe quedar ligada a la versión de reglamento del evento.</div>'],
+obstaculos:['🏃 Obstáculos','Control de carrera con obstáculos.','<div class="notice">Captura prevista: tiempo, posición, penalizaciones, incidencias y estado.</div>'],
+laser:['🏃‍♂️🔫 Laser Run','Control de Laser Run.','<div class="notice">Captura prevista: tiempo, tiro/visitas, penalizaciones, posición y estado. El motor de puntuación final se parametrizará por categoría y reglamento.</div>'],
+resultados:['📊 Resultados','Clasificación general.','<div class="notice">Separación de resultados provisionales, aprobados y publicados. Preparado para evitar que un cambio técnico publique automáticamente un resultado no revisado.</div>'],
+podios:['🏅 Podios','Podios por categoría y rama.','<div class="notice">Podios organizados por categoría y rama, después de la aprobación técnica.</div>'],
+gafetes:['🎫 Gafetes','Acreditaciones.','<div class="notice">Preparado para generar identificadores de atletas, entrenadores, jueces y personal.</div>'],
+reportes:['📄 Reportes','Reportes del evento.','<div class="notice">Preparado para listas de salida, resultados, podios, incidencias y reportes administrativos.</div>']
+};
+function render(id){
+ const d=datos(), evYear=(d.eventos[0]?.fecha||'2026-01-01').slice(0,4)*1;
+ if(id==='organizador')document.getElementById('resumen').innerHTML=
+  [['Eventos',d.eventos.length],['Atletas',d.atletas.length],['Clubes',d.clubes.length],['Inscripciones',(d.inscripciones||[]).length]].map(x=>`<div class="card"><div class="small">${x[0]}</div><div class="num">${x[1]}</div></div>`).join('');
+ if(id==='categorias')document.getElementById('listaCategorias').innerHTML=cats.map(c=>`<div class="card" style="margin:7px 0"><b>${c[0]}</b> <span class="badge">${c[1]}</span><div class="small">${pruebas(c[0])}</div></div>`).join('');
+ if(id==='atletas')document.getElementById('tablaAtletas').innerHTML=d.atletas.map(a=>`<tr><td>${a.nombre}</td><td>${a.anio}</td><td>${a.rama}</td><td><b>${a.cat}</b></td><td>${a.club||'-'}</td></tr>`).join('');
+ if(id==='clubes')document.getElementById('tablaClubes').innerHTML=d.clubes.map(c=>`<tr><td>${c.nombre}</td><td>${c.estado||'-'}</td></tr>`).join('');
+ if(id==='inscripciones'){document.getElementById('tablaIns').innerHTML=d.atletas.map((a,i)=>`<tr><td><input type="checkbox" ${d.inscripciones?.includes(i)?'checked':''} onchange="toggleIns(${i},this.checked)"></td><td>${a.nombre}</td><td>${a.club||'-'}</td><td>${a.rama}</td><td>${a.cat}</td><td>${pruebas(a.cat)}</td></tr>`).join('');}
+ if(id==='resultados'){document.getElementById('rAtleta').innerHTML=d.atletas.map((a,i)=>`<option value="${i}">${a.nombre} - ${a.cat} - ${a.rama}</option>`).join('');document.getElementById('tablaResultados').innerHTML=(d.resultados||[]).map(r=>{const a=d.atletas[r.atleta];return `<tr><td>${a?.nombre||'-'}</td><td>${a?.cat||'-'}</td><td>${r.prueba}</td><td>${r.puntos}</td><td>${r.marca||'-'}</td><td><span class="badge">${r.estado}</span>${r.obs?'<div class="small">'+r.obs+'</div>':''}</td></tr>`}).join('');}
+ if(id==='podios')renderPodios(d); if(id==='simulacion')renderSimulacion(); if(id==='control')renderControl();
+ if(id==='eventos'){const e=d.eventos[0];document.getElementById('eventoGuardado').innerHTML=e?`<div class="notice"><b>Evento activo:</b> ${e.nombre} · ${e.fecha} · ${e.sede}, ${e.ciudad} · ${e.reg}</div>`:''}
+}
+function toggleIns(i,checked){const d=datos();d.inscripciones=d.inscripciones||[];if(checked&&!d.inscripciones.includes(i))d.inscripciones.push(i);if(!checked)d.inscripciones=d.inscripciones.filter(x=>x!==i);save(d);}
+function inscribirTodos(){const d=datos();d.inscripciones=d.atletas.map((_,i)=>i);save(d);render('inscripciones');}
+function guardarResultado(){const d=datos();d.resultados=d.resultados||[];const atleta=Number(rAtleta.value);if(!d.atletas[atleta]){alert('Registra un atleta primero.');return}if(rPuntos.value===''){alert('Captura los puntos.');return}d.resultados.push({atleta,prueba:rPrueba.value,puntos:Number(rPuntos.value),marca:rMarca.value,obs:rObs.value,estado:'Provisional',fecha:new Date().toISOString()});save(d);rPuntos.value='';rMarca.value='';rObs.value='';render('resultados');}
+function aprobarResultados(){const d=datos();d.resultados=(d.resultados||[]).map(r=>r.estado==='Provisional'?{...r,estado:'Aprobado'}:r);save(d);render('resultados');}
+function publicarResultados(){const d=datos();d.resultados=(d.resultados||[]).map(r=>r.estado==='Aprobado'?{...r,estado:'Publicado'}:r);save(d);render('resultados');}
+function renderPodios(d){const ok=(d.resultados||[]).filter(r=>r.estado==='Aprobado'||r.estado==='Publicado');const groups={};ok.forEach(r=>{const a=d.atletas[r.atleta];if(!a)return;const k=a.cat+'|'+a.rama;groups[k]=groups[k]||{};groups[k][r.atleta]=(groups[k][r.atleta]||0)+Number(r.puntos||0)});const entries=Object.entries(groups);document.getElementById('podiosContenido').innerHTML=entries.length?entries.map(([k,vals])=>{const [cat,rama]=k.split('|');const rows=Object.entries(vals).sort((a,b)=>b[1]-a[1]).map((x,i)=>{const a=d.atletas[x[0]];return `<tr><td>${i+1}</td><td>${a.nombre}</td><td>${x[1]}</td><td>${a.club||'-'}</td></tr>`}).join('');return `<div class="box"><h3>${cat} - ${rama}</h3><table><tr><th>Pos.</th><th>Atleta</th><th>Puntos</th><th>Club</th></tr>${rows}</table></div>`}).join(''):'<div class="notice">No hay resultados aprobados todavía.</div>';}
+
+function crearSimulacion(){
+ const d=datos();
+ d.eventos=[{nombre:'Campeonato Nacional de Pentatlón Moderno 2026',fecha:'2026-10-24',sede:'Centro Nacional de Alto Rendimiento',ciudad:'Ciudad de México',reg:'UIPM 2026',formato:'Individual'}];
+ const clubs=['Club Azteca','Pentatlón Jalisco','Club Halcones','Pentatlón Nuevo León','Club del Valle'];
+ d.clubes=clubs.map((nombre,i)=>({nombre,estado:['Jalisco','CDMX','Nuevo León','Querétaro','Puebla'][i]}));
+ const edades=[8,10,12,14,16,18,20,25,35,45,55,65,72], ramas=['Femenil','Masculino'];
+ d.atletas=[];
+ for(let i=0;i<30;i++){const edad=edades[i%edades.length],anio=2026-edad;d.atletas.push({nombre:'Atleta Demo '+String(i+1).padStart(2,'0'),anio,rama:ramas[i%2],club:clubs[i%clubs.length],cat:categoria(anio,2026)});}
+ d.inscripciones=d.atletas.map((_,i)=>i); d.resultados=[]; save(d); render('simulacion'); render('organizador');
+}
+function generarResultadosDemo(){
+ const d=datos(); if(!d.atletas.length){alert('Primero crea la simulación.');return}
+ d.resultados=[];
+ d.atletas.forEach((a,i)=>pruebas(a.cat).split(' + ').filter(p=>!p.includes('otras')).forEach((p,j)=>d.resultados.push({atleta:i,prueba:p,puntos:220+(i*7+j*13)%120,marca:'00:'+String(20+j*4).padStart(2,'0')+'.'+String((i*17)%100).padStart(2,'0'),obs:'',estado:'Provisional',fecha:new Date().toISOString()})));
+ if(d.resultados[1])d.resultados[1].obs='DNS - prueba no iniciada';
+ if(d.resultados[5])d.resultados[5].obs='DNF - no finalizó';
+ if(d.resultados[8])d.resultados[8].obs='Penalización técnica';
+ save(d); render('simulacion'); render('resultados');
+}
+function renderSimulacion(){
+ const d=datos(), byCat={}; d.atletas.forEach(a=>byCat[a.cat]=(byCat[a.cat]||0)+1);
+ document.getElementById('simResumen').innerHTML='<div class="cards"><div class="card"><div class="small">Atletas</div><div class="num">'+d.atletas.length+'</div></div><div class="card"><div class="small">Clubes</div><div class="num">'+d.clubes.length+'</div></div><div class="card"><div class="small">Inscritos</div><div class="num">'+(d.inscripciones||[]).length+'</div></div><div class="card"><div class="small">Resultados</div><div class="num">'+(d.resultados||[]).length+'</div></div></div><p>'+Object.entries(byCat).map(x=>'<span class="badge">'+x[0]+': '+x[1]+'</span>').join(' ')+'</p>';
+ const sorted=[...d.atletas].sort((a,b)=>a.cat.localeCompare(b.cat)||a.rama.localeCompare(b.rama));
+ document.getElementById('listaSalida').innerHTML='<table><tr><th>#</th><th>Atleta</th><th>Rama</th><th>Categoría</th><th>Club</th><th>Pruebas</th></tr>'+sorted.map((a,i)=>'<tr><td>'+(i+1)+'</td><td>'+a.nombre+'</td><td>'+a.rama+'</td><td>'+a.cat+'</td><td>'+a.club+'</td><td>'+pruebas(a.cat)+'</td></tr>').join('')+'</table>';
+ document.getElementById('casosDemo').innerHTML='<span class="badge">DNS</span> <span class="badge">DNF</span> <span class="badge">Penalización</span> <span class="badge">Provisional</span> <span class="badge">Aprobado</span> <span class="badge">Publicado</span>';
+}
+
+function backupDatos(){
+ const blob=new Blob([JSON.stringify(datos(),null,2)],{type:'application/json'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pentasport-respaldo-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);
+}
+function limpiarDemo(){
+ if(!confirm('Esto eliminará los datos locales del navegador. ¿Continuar?'))return;
+ localStorage.removeItem(KEY);location.reload();
+}
+function renderControl(){
+ const d=datos(), total=d.atletas.length, ins=(d.inscripciones||[]).length, res=(d.resultados||[]).length, pub=(d.resultados||[]).filter(r=>r.estado==='Publicado').length;
+ document.getElementById('controlCards').innerHTML=[['Atletas',total],['Inscritos',ins],['Resultados',res],['Publicados',pub]].map(x=>'<div class="card"><div class="small">'+x[0]+'</div><div class="num">'+x[1]+'</div></div>').join('');
+ const checks=[
+ ['Evento creado',d.eventos.length>0],['Clubes registrados',d.clubes.length>0],['Atletas registrados',total>0],
+ ['Inscripciones realizadas',ins>0],['Resultados capturados',res>0],['Resultados aprobados',res>0 && (d.resultados||[]).every(r=>r.estado!=='Provisional')],
+ ['Resultados publicados',pub>0]
+ ];
+ document.getElementById('checklist').innerHTML=checks.map(x=>'<div class="notice" style="margin:6px 0">'+(x[1]?'✅':'⬜')+' '+x[0]+'</div>').join('');
+}
+function guardarEvento(){
+ const d=datos(); const e={nombre:evNombre.value||'Evento nacional',fecha:evFecha.value||'2026-01-01',sede:evSede.value||'',ciudad:evCiudad.value||'',reg:evReg.value,formato:evFormato.value};
+ d.eventos=[e];save(d);render('eventos');alert('Evento guardado.');
+}
+function guardarAtleta(){
+ const d=datos(), anio=Number(aAnio.value); const evYear=(d.eventos[0]?.fecha||'2026-01-01').slice(0,4)*1;
+ if(!aNombre.value||!anio){alert('Captura nombre y año de nacimiento.');return}
+ const cat=categoria(anio,evYear);d.atletas.push({nombre:aNombre.value,anio,rama:aRama.value,club:aClub.value,cat});save(d);
+ document.getElementById('atletaResultado').innerHTML=`<div class="notice">Atleta registrado en <b>${cat}</b>. Pruebas: ${pruebas(cat)}.</div>`;
+ aNombre.value='';aAnio.value='';aClub.value='';render('atletas');
+}
+function guardarClub(){
+ const d=datos();if(!cNombre.value){alert('Captura el nombre del club.');return}
+ d.clubes.push({nombre:cNombre.value,estado:cEstado.value});save(d);cNombre.value='';cEstado.value='';render('clubes');
+}
+async function cargarServidor(){
+ if(!SERVER_MODE){setServerStatus('Modo local',true);return;}
+ try{
+  const r=await fetch('/api/state',{cache:'no-store'}); if(!r.ok) throw new Error('HTTP '+r.status);
+  const d=await r.json(); localStorage.setItem(KEY,JSON.stringify(d));
+  setServerStatus('Servidor central conectado',true);
+ }catch(e){setServerStatus('Servidor central sin respuesta',false);}
+}
+async function sondearServidor(){
+ if(!SERVER_MODE || syncBusy) return;
+ try{
+  const r=await fetch('/api/state',{cache:'no-store'}); if(!r.ok) return;
+  const remote=await r.json(); const local=datos();
+  if(JSON.stringify(remote)!==JSON.stringify(local)){
+   localStorage.setItem(KEY,JSON.stringify(remote));
+   render(currentPage);
+   setServerStatus('Sincronizado ✓',true);
+  }
+ }catch(e){setServerStatus('Servidor central sin respuesta',false);}
+}
+async function iniciarApp(){
+ await cargarServidor();
+ render('organizador');render('categorias');
+ if(SERVER_MODE) setInterval(sondearServidor,1500);
+}
+iniciarApp();
+
+function mostrarDireccion(){const ip=document.getElementById('ipLan').value||'192.168.1.100';const p=document.getElementById('puertoLan').value||'8080';document.getElementById('direccionLan').innerHTML='<div class="notice"><b>Dirección para jueces:</b><br>http://'+ip+':'+p+'</div>';}
+</script></main><script>if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));</script></body></html>

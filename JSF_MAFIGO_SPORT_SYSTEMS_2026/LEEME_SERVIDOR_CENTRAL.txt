@@ -1,0 +1,28 @@
+JSF & MAFIGO SPORT SYSTEMS - SERVIDOR CENTRAL
+
+OBJETIVO
+Esta version permite que la laptop sea el servidor central del evento. Los celulares/tablets conectados al mismo Wi-Fi consultan y actualizan la misma base de datos JSON.
+
+REQUISITOS
+- Windows
+- Python 3 de 64 bits instalado
+- Laptop y dispositivos conectados al mismo Wi-Fi/router
+
+ARRANQUE
+1. Abre "iniciar_servidor_central.bat".
+2. En la laptop abre http://localhost:8080
+3. Para un celular/tablet, ejecuta ipconfig en Windows y localiza la Direccion IPv4 de la laptop, por ejemplo 192.168.1.100.
+4. En el celular abre http://192.168.1.100:8080
+5. Si Windows pregunta por Firewall, permite Python en red privada.
+
+SINCRONIZACION
+- El servidor guarda el estado en jsf_mafigo_db.json.
+- Los dispositivos consultan el estado central aproximadamente cada 1.5 segundos.
+- Los cambios de captura se envian al servidor.
+- No se necesita Internet despues de que la red local este funcionando.
+
+IMPORTANTE
+Esta es una primera version de servidor central local. Para una operacion oficial de alta exigencia todavia conviene agregar autenticacion por roles, base de datos transaccional, bitacora de auditoria, bloqueo de conflictos, respaldos automaticos y sincronizacion en tiempo real por WebSocket.
+
+RESPALDO
+El archivo jsf_mafigo_db.json es el respaldo de datos del servidor. Copialo despues de cada jornada y antes de cambios importantes.
